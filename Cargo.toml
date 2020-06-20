@@ -1,0 +1,13 @@
+[package]
+name = "cargo-publish-workspace"
+version = "0.0.0"
+authors = ["Martijn Gribnau <garm@ilumeo.com>"]
+edition = "2018"
+description = "Publish all crates in a Cargo workspace"
+license = "Apache-2.0"
+repository = "https://github.com/foresterre/cargo-publish-workspace"
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.31"
+thiserror = "1.0.20"
