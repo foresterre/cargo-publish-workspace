@@ -36,7 +36,7 @@ impl CargoPublishWorkspace {
 #[clap(
     global_setting(AppSettings::VersionlessSubcommands),
     global_setting(AppSettings::TrailingVarArg),
-    after_help("Issues, requests or questions can be submitted at: 'https://github.com/foresterre/sic/issues', please add the label 'X-cargo-release-workspace', thanks!")
+    after_help("Issues, requests and questions can be submitted at: 'https://github.com/foresterre/cargo-publish-workspace/issues', thanks!")
 )]
 pub struct PublishWorkspace {
     /// Simulate running this program
