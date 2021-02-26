@@ -48,15 +48,17 @@ jobs:
           override: true
           profile: minimal
 
-      - name: Run cargo check
+      - name: Cargo build
         uses: actions-rs/cargo@v1
         with:
-          command: build --all
+          command: build
+          args: --all
 
-      - name: Run cargo check
+      - name: Cargo test
         uses: actions-rs/cargo@v1
         with:
-          command: test --all
+          command: test
+          args: --all
 
   lint:
     name: ci-lint
