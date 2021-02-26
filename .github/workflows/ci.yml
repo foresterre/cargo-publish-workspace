@@ -1,0 +1,113 @@
+name: "ci"
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - main
+jobs:
+  test:
+    name: ci-test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build: [msrv, stable, nightly, macos, win-gnu, win-msvc]
+        include:
+          - build: msrv
+            os: ubuntu-latest
+            rust: 1.45.0
+
+          - build: stable
+            os: ubuntu-latest
+            rust: stable
+
+          - build: nightly
+            os: ubuntu-latest
+            rust: nightly
+
+          - build: macos
+            os: macOS-latest
+            rust: stable
+
+          - build: win-gnu
+            os: windows-latest
+            rust: stable-x86_64-gnu
+
+          - build: win-msvc
+            os: windows-latest
+            rust: stable
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust }}
+          override: true
+          profile: minimal
+
+      - name: Run cargo check
+        uses: actions-rs/cargo@v1
+        with:
+          command: build --all
+
+      - name: Run cargo check
+        uses: actions-rs/cargo@v1
+        with:
+          command: test --all
+
+  lint:
+    name: ci-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+          components: clippy
+
+      - name: Lint with Clippy
+        uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args:  --tests -- -Dclippy::all
+
+  rustfmt:
+    name: ci-rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+          uses: actions/checkout@v2
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+          components: rustfmt
+
+      - name: Check formatting
+        run: |
+          cargo fmt --all -- --check
+
+  cargo_deny:
+    name: ci-cargo-deny
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        checks:
+          - advisories
+          - bans licenses sources
+
+    continue-on-error: ${{ matrix.checks == 'advisories' }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: EmbarkStudios/cargo-deny-action@v1
