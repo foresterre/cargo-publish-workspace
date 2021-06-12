@@ -1,0 +1,17 @@
+status = [
+    "test (msrv)",
+    "test (stable)",
+    "test (beta)",
+    "test (nightly)",
+    "test (macos)",
+    "test (win-gnu)",
+    "test (win-msvc)",
+    "clippy",
+    "rustfmt",
+    "cargo_deny (advisories)",
+    "cargo_deny (bans licenses sources)"
+]
+
+[committer]
+name = "Martijn"
+email = "garm@ilumeo.com"
