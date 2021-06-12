@@ -5,13 +5,15 @@ on:
     branches:
       - master
       - main
+      - staging # for Bors
+      - trying # for Bors
 jobs:
   test:
-    name: ci-test
+    name: test
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        build: [msrv, stable, nightly, macos, win-gnu, win-msvc]
+        build: [msrv, stable, beta, nightly, macos, win-gnu, win-msvc]
         include:
           - build: msrv
             os: ubuntu-latest
@@ -20,6 +22,10 @@ jobs:
           - build: stable
             os: ubuntu-latest
             rust: stable
+
+          - build: beta
+            os: ubuntu-latest
+            rust: beta
 
           - build: nightly
             os: ubuntu-latest
@@ -38,36 +44,36 @@ jobs:
             rust: stable
 
     steps:
-      - name: Checkout repository
+      - name: checkout_repository
         uses: actions/checkout@v2
 
-      - name: Install Rust
+      - name: install_rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: ${{ matrix.rust }}
           override: true
           profile: minimal
 
-      - name: Cargo build
+      - name: run_build
         uses: actions-rs/cargo@v1
         with:
           command: build
           args: --all
 
-      - name: Cargo test
+      - name: run_test
         uses: actions-rs/cargo@v1
         with:
           command: test
           args: --all
 
-  lint:
-    name: ci-lint
+  clippy:
+    name: clippy
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: checkout_repository
         uses: actions/checkout@v2
 
-      - name: Install Rust
+      - name: install_rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
@@ -75,20 +81,20 @@ jobs:
           profile: minimal
           components: clippy
 
-      - name: Lint with Clippy
+      - name: run_clippy
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           args:  --tests -- -Dclippy::all
 
   rustfmt:
-    name: ci-rustfmt
+    name: rustfmt
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: checkout_repository
         uses: actions/checkout@v2
 
-      - name: Install Rust
+      - name: install_rust
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
@@ -96,12 +102,12 @@ jobs:
           profile: minimal
           components: rustfmt
 
-      - name: Check formatting
+      - name: run_fmt_check
         run: |
           cargo fmt --all -- --check
 
   cargo_deny:
-    name: ci-cargo-deny
+    name: cargo_deny
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -113,3 +119,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: EmbarkStudios/cargo-deny-action@v1
+
+  msrv:
+    name: msrv
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: checkout_repo
+        uses: actions/checkout@v2
+      - name: install_rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+      - name: install_cargo_msrv
+        run: cargo install cargo-msrv
+      - name: version_of_cargo_msrv
+        run: cargo msrv --version # as of writing: 0.6.0
+      - name: run_cargo_msrv
+        run: cargo msrv --bisect --ignore-lockfile --output-format json --minimum 1.31.0
