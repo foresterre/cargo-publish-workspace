@@ -136,6 +136,6 @@ jobs:
       - name: install_cargo_msrv
         run: cargo install cargo-msrv
       - name: version_of_cargo_msrv
-        run: cargo msrv --version # as of writing: 0.6.0
+        run: cargo msrv --version # as of writing: 0.7.0
       - name: run_cargo_msrv
-        run: cargo msrv --bisect --ignore-lockfile --output-format json --minimum 1.31.0
+        run: cargo msrv --verify --ignore-lockfile --output-format json
