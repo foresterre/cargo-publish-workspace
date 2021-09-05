@@ -24,7 +24,7 @@ impl Commit {
         let mut command = Command::new("git");
         command.current_dir(dir);
 
-        Self::create_cmd(&mut command, package_name, &args.version(), args.dry_run);
+        Self::create_cmd(&mut command, package_name, args.version(), args.dry_run);
 
         Commit { command }
     }
