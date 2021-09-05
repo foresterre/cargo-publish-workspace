@@ -34,7 +34,7 @@ impl CargoPublishWorkspace {
 /// directory.
 #[derive(Clap, Debug)]
 #[clap(
-    global_setting(AppSettings::VersionlessSubcommands),
+    global_setting(AppSettings::DisableVersionForSubcommands),
     global_setting(AppSettings::TrailingVarArg),
     after_help("Issues, requests and questions can be submitted at: 'https://github.com/foresterre/cargo-publish-workspace/issues', thanks!")
 )]
