@@ -15,10 +15,6 @@ jobs:
       matrix:
         build: [msrv, stable, beta, nightly, macos, win-gnu, win-msvc]
         include:
-          - build: msrv
-            os: ubuntu-latest
-            rust: 1.45.0
-
           - build: stable
             os: ubuntu-latest
             rust: stable
