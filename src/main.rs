@@ -93,13 +93,13 @@ fn new_publish<'g>(
         let kickstart = Ok(());
 
         let _ = kickstart
-            .and_then(|_| set_new_version(component, &args)) // set_new_version for component to 'version
-            .and_then(|_| set_dependent_version(component, dependents_db, &args, Some("*"))) // set_dependent_version to * locally
-            .do_if(|| true, |_| publish(component, &args)) // publish for component
-            .and_then(|_| set_dependent_version(component, dependents_db, &args, None)) // set_dependent_version to 'version
+            .and_then(|_| set_new_version(component, args)) // set_new_version for component to 'version
+            .and_then(|_| set_dependent_version(component, dependents_db, args, Some("*"))) // set_dependent_version to * locally
+            .do_if(|| true, |_| publish(component, args)) // publish for component
+            .and_then(|_| set_dependent_version(component, dependents_db, args, None)) // set_dependent_version to 'version
             .do_if(
                 || true,
-                |_| make_commit(&args, *component, crate_folder.as_ref()),
+                |_| make_commit(args, *component, crate_folder.as_ref()),
             )?; // commit changes
 
         // give the index time to update, if we still have to publish another crate
@@ -142,7 +142,7 @@ fn set_dependent_version<'g>(
     args: &PublishWorkspace,
     override_new_version: Option<&str>,
 ) -> Result<()> {
-    let mut act = UpdateDependents::new(dependents_db, &component, override_new_version);
+    let mut act = UpdateDependents::new(dependents_db, component, override_new_version);
     act.run(args)
 }
 
