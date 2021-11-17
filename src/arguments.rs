@@ -1,11 +1,11 @@
-use clap::{AppSettings, Clap};
+use clap::AppSettings;
 
 /// Topologically publish a complete workspace
 ///
 /// If you see this message, you probably want to use this command instead by executing:
 /// 'cargo publish-workspace <options, ...>'. Alternatively, you can also run:
 /// 'cargo-publish-workspace publish-workspace <options, ...>'
-#[derive(Debug, Clap)]
+#[derive(clap::Parser, Debug)]
 #[clap(name = "cargo-publish-workspace", bin_name = "cargo")]
 pub enum CargoPublishWorkspace {
     PublishWorkspace(PublishWorkspace),
@@ -32,9 +32,9 @@ impl CargoPublishWorkspace {
 ///
 /// By default, a tag formatted `v<version>` (e.g. v1.0.3) will be created from the current working
 /// directory.
-#[derive(Clap, Debug)]
+#[derive(clap::Parser, Debug)]
 #[clap(
-    global_setting(AppSettings::DisableVersionForSubcommands),
+    global_setting(AppSettings::DisableVersionFlag),
     global_setting(AppSettings::TrailingVarArg),
     after_help("Issues, requests and questions can be submitted at: 'https://github.com/foresterre/cargo-publish-workspace/issues', thanks!")
 )]

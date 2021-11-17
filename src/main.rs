@@ -4,7 +4,7 @@
 use std::collections::{HashMap, HashSet};
 
 use anyhow::{Context, Result};
-use clap::Clap;
+use clap::Parser;
 use guppy::graph::{PackageGraph, PackageMetadata};
 use guppy::MetadataCommand;
 

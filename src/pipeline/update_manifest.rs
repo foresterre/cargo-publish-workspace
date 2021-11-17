@@ -48,7 +48,7 @@ fn toml_update(manifest: &Path, new_version: &str) -> anyhow::Result<()> {
     let mut document = contents.parse::<toml_edit::Document>()?;
     document["package"]["version"] = value(new_version);
 
-    std::fs::write(manifest, document.to_string_in_original_order())?;
+    std::fs::write(manifest, document.to_string())?;
 
     Ok(())
 }

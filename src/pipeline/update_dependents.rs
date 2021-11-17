@@ -80,7 +80,7 @@ fn update_dependent_manifest(dependent: &PackageWrapper<'_>, version: &str) -> a
         document["build-dependencies"][dependency]["version"] = value(version);
     }
 
-    std::fs::write(manifest, document.to_string_in_original_order())?;
+    std::fs::write(manifest, document.to_string())?;
 
     Ok(())
 }

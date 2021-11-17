@@ -13,8 +13,8 @@ msrv = "1.45.2"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clap = "=3.0.0-beta.4"
-anyhow = "1.0.44"
+clap = "=3.0.0-beta.5"
+anyhow = "1.0.45"
 chrono = "0.4.15"
 guppy = "0.11.2"
-toml_edit = "0.2.1"
+toml_edit = "0.9.1"
