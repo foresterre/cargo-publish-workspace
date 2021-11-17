@@ -1,5 +1,8 @@
 # cargo-publish-workspace
 
+⚠ This project is not under active development. It was developed when there were no satisfactory solutions for publishing complete Cargo workspaces available, and is completely tailored towards my projects; only containing the features I need. If you're looking for an alternative, I would suggest:
+* https://github.com/crate-ci/cargo-release
+
 ## Goals
 
 * Publish workspace packages to crates.io with a single command.
