@@ -122,7 +122,8 @@ fn create_dependents_db<'a>(
         dep.direct_links()
             .filter(|n| ws.contains(n.dep_name()))
             .for_each(|link| {
-                let set = map.entry(link.resolved_name()).or_default();
+                // FIXME: link.dep_name() possibly fails in case of a rename
+                let set = map.entry(link.dep_name()).or_default();
 
                 set.insert(PackageWrapper::new(*dep, link));
             });
